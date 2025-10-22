@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fruit_hub_dashboard/core/routing/app_router.dart';
+import 'package:fruit_hub_dashboard/core/supabase/supabase_storage.dart';
+import 'package:fruit_hub_dashboard/fruit_hub_app_dashboard.dart';
 
-void main() {
-  runApp(const MainApp());
-}
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
-  }
+  await SupabaseStorage.initSupabase();
+  runApp(FruitAppDashboard(appRouter: AppRouter()));
 }

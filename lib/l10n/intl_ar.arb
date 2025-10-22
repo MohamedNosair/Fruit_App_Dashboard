@@ -1,0 +1,8 @@
+{
+"addProduct": "إضافة منتج",
+"productName": "اسم المنتج",
+"productPrice": "سعر المنتج",
+"productCode": "رمز المنتج",
+"productDescription": "وصف المنتج",
+"isFeaturedItem": "عنصر مميز"
+}
