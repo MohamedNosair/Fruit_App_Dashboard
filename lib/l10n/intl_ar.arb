@@ -4,5 +4,9 @@
 "productPrice": "سعر المنتج",
 "productCode": "رمز المنتج",
 "productDescription": "وصف المنتج",
-"isFeaturedItem": "عنصر مميز"
+"isFeaturedItem": "عنصر مميز",
+"unitAmount": "وحدة المبلغ",
+"numberOfCalories": "عدد السعرات الحرارية",
+"expirationsMonths": " الصلاحية",
+"isOrganic": "اورجانيك"
 }

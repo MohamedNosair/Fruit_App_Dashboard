@@ -1,14 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub_dashboard/core/utils/spacing_helper.dart';
 import 'package:fruit_hub_dashboard/core/widgets/custom_buttom.dart';
 import 'package:fruit_hub_dashboard/core/widgets/custom_text_form_field.dart';
 import 'package:fruit_hub_dashboard/feature/add_product/domain/entities/add_product_entity.dart';
+import 'package:fruit_hub_dashboard/feature/add_product/ui/cubit/add_product_cubit.dart';
 import 'package:fruit_hub_dashboard/feature/add_product/ui/widgets/image_field.dart';
 import 'package:fruit_hub_dashboard/feature/add_product/ui/widgets/is_feature_check_box.dart';
+import 'package:fruit_hub_dashboard/feature/add_product/ui/widgets/is_organic_check_box.dart';
 import 'package:fruit_hub_dashboard/generated/l10n.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AddProductsBody extends StatefulWidget {
   const AddProductsBody({super.key});
@@ -22,8 +24,9 @@ class _AddProductsBodyState extends State<AddProductsBody> {
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   File? image;
   late String name, code, description;
-  late num price;
+  late num price, numberOfCalories, unitAmount, expirationsMonths;
   bool isChecked = false;
+  bool isOrganic = false;
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -51,11 +54,45 @@ class _AddProductsBodyState extends State<AddProductsBody> {
               ),
               CustomTextFormField(
                 onSaved: (value) {
+                  price = num.parse(value!);
+                },
+                hintText: S.current.productPrice,
+                textInputType: TextInputType.number,
+              ),
+              CustomTextFormField(
+                onSaved: (value) {
+                  expirationsMonths = num.parse(value!);
+                },
+                hintText: S.current.expirationsMonths,
+                textInputType: TextInputType.number,
+              ),
+              CustomTextFormField(
+                onSaved: (value) {
+                  numberOfCalories = num.parse(value!);
+                },
+                hintText: S.current.numberOfCalories,
+                textInputType: TextInputType.number,
+              ),
+
+              /// unit amount field
+              CustomTextFormField(
+                onSaved: (value) {
+                  unitAmount = num.parse(value!);
+                },
+                hintText: S.current.unitAmount,
+                textInputType: TextInputType.number,
+              ),
+
+              /// product code field
+              CustomTextFormField(
+                onSaved: (value) {
                   code = value!;
                 },
                 hintText: S.current.productCode,
                 textInputType: TextInputType.text,
               ),
+
+              /// product description field
               CustomTextFormField(
                 onSaved: (value) {
                   description = value!;
@@ -64,6 +101,8 @@ class _AddProductsBodyState extends State<AddProductsBody> {
                 textInputType: TextInputType.multiline,
                 maxLines: 5,
               ),
+
+              /// check box special item
               GestureDetector(
                 onTap: () {
                   isChecked = !isChecked;
@@ -72,13 +111,23 @@ class _AddProductsBodyState extends State<AddProductsBody> {
                 child: IsFeatureCheckBox(isChecked: isChecked),
               ),
 
+              /// check box organic item
+              GestureDetector(
+                onTap: () {
+                  isOrganic = !isOrganic;
+                  setState(() {});
+                },
+                child: IsOrganicCheckBox(isOrganic: isOrganic),
+              ),
+
+              //* add image
               ImageField(
                 onFileChange: (file) {
                   setState(() {});
                   image = file;
                 },
               ),
-
+              //* button add product
               CustomButton(
                 text: S.current.addProduct,
                 onPressed: () {
@@ -86,12 +135,21 @@ class _AddProductsBodyState extends State<AddProductsBody> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       AddProductEntity addProductEntity = AddProductEntity(
+                        reviews: [],
                         name: name,
                         description: description,
                         price: price,
                         imageUrl: image?.path,
                         isFeatured: isChecked,
                         imageFile: image!,
+                        expirationsMonths: expirationsMonths.toInt(),
+                        numberOfCalories: numberOfCalories,
+                        unitAmount: unitAmount,
+                        isOrganic: isOrganic,
+                      );
+
+                      context.read<AddProductCubit>().addProduct(
+                        addProductEntity,
                       );
                     } else {
                       autovalidateMode = AutovalidateMode.always;

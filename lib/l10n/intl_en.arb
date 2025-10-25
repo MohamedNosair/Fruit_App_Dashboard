@@ -4,5 +4,9 @@
 "productPrice": "Product Price",
 "productCode": "Product Code",
 "productDescription": "Product Description",
-"isFeaturedItem": "Is Featured Item"
+"isFeaturedItem": "Is Featured Item",
+"unitAmount": "Unit Amount",
+"numberOfCalories": "Number Of Calories",
+"expirationsMonths": "Expirations Months",
+"isOrganic": "Is Organic"
 }
