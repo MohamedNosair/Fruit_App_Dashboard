@@ -52,13 +52,7 @@ class _AddProductsBodyState extends State<AddProductsBody> {
                 hintText: S.current.productPrice,
                 textInputType: TextInputType.number,
               ),
-              CustomTextFormField(
-                onSaved: (value) {
-                  price = num.parse(value!);
-                },
-                hintText: S.current.productPrice,
-                textInputType: TextInputType.number,
-              ),
+
               CustomTextFormField(
                 onSaved: (value) {
                   expirationsMonths = num.parse(value!);
